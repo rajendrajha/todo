@@ -60,6 +60,30 @@
         let desc = document.querySelector('#desc')
         let form = document.querySelector('form')
         let container = document.querySelector('.container')
+        if(localStorage.getItem('item')=='[]'){
+            container.innerHTML= '<h1>No notes available...☹</h1>'
+        }else{
+            for(let i=0;i<JSON.parse(localStorage.getItem('item')).length;i++){
+                let data= JSON.parse(localStorage.getItem('item'))
+                let template= `
+                <div class="card" style="width: 18rem;">
+      
+      <div class="card-body">
+        <h5 class="card-title">${data[i].title}</h5>
+        <p class="card-text">${data[i].desc}</p>
+        <a href="#" class="btn btn-danger" onclick="
+        let data= JSON.parse(localStorage.getItem('item'));
+        data= data.slice(${i+1});
+        localStorage.setItem('item', JSON.stringify(data));
+        if(localStorage.getItem('item')=='[]'){
+            container.innerHTML= '<h1>No notes available...☹</h1>'
+        }
+        this.parentNode.style.display='none';this.parentNode.style.border='none';">Delete</a>
+      </div>
+    </div>`
+    container.innerHTML+=template
+            }
+        }
         form.addEventListener('submit', (e)=>{
             e.preventDefault()
             if(!localStorage.getItem('item')){
@@ -92,7 +116,14 @@
       <div class="card-body">
         <h5 class="card-title">${data[i].title}</h5>
         <p class="card-text">${data[i].desc}</p>
-        <a href="#" class="btn btn-danger" onclick="let data= JSON.parse(localStorage.getItem('item'));data= data.slice(${i-1});localStorage.setItem('item', JSON.stringify(data));this.parentNode.style.display='none'">Delete</a>
+        <a href="#" class="btn btn-danger" onclick="
+        let data= JSON.parse(localStorage.getItem('item'));
+        data= data.slice(${i+1});
+        localStorage.setItem('item', JSON.stringify(data));
+        if(localStorage.getItem('item')=='[]'){
+            container.innerHTML= '<h1>No notes available...☹</h1>'
+        }
+        this.parentNode.style.display='none';this.parentNode.style.border='none';">Delete</a>
       </div>
     </div>`
     container.innerHTML+=template
